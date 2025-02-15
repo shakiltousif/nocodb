@@ -39,3 +39,5 @@ export const getScrollbarWidth = () => {
 export const isMousePointerType = (event: Event) => {
   return event instanceof PointerEvent && event?.pointerType === 'mouse'
 }
+
+export const isTouchEvent = (event: Event | TouchEvent) => !isMousePointerType(event)
