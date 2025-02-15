@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  nocodb:
+    image: nocodb/nocodb:latest
+    container_name: nocodb
+    ports:
+      - "8090:8080"  # Exposing NocoDB on port 8090
+    volumes:
+      - ./nocodb_data:/usr/app/data
+    environment:
+      NC_PORT: 8080  # Internal container port remains 8080
+    restart: unless-stopped
