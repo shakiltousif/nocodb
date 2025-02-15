@@ -35,3 +35,7 @@ export const getScrollbarWidth = () => {
   outer?.parentNode?.removeChild(outer)
   return widthNoScroll - widthWithScroll
 }
+
+export const isMousePointerType = (event: Event) => {
+  return event instanceof PointerEvent && event?.pointerType === 'mouse'
+}

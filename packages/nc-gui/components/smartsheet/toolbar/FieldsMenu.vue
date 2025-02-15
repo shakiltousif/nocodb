@@ -697,6 +697,11 @@ const onAddColumnDropdownVisibilityChange = () => {
               item-key="id"
               ghost-class="nc-fields-menu-items-ghost"
               :disabled="isLocked"
+              :filter="
+                (event) => {
+                  return !isMousePointerType(event)
+                }
+              "
               @change="onMove($event)"
               @start="isDragging = true"
               @end="isDragging = false"
