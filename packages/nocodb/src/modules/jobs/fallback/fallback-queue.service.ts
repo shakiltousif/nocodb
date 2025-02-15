@@ -29,26 +29,40 @@ export class QueueService {
       job.status = JobStatus.ACTIVE;
       this.jobsEventService.onActive.apply(this.jobsEventService, [job as any]);
     });
-    this.emitter.on(JobStatus.COMPLETED, (data: { job: Job; result: any }) => {
-      const job = this.queueMemory.find((job) => job.id === data.job.id);
-      job.status = JobStatus.COMPLETED;
-      this.jobsEventService.onCompleted.apply(this.jobsEventService, [
-        job,
-        data.result,
-      ]);
-      // clear job from memory
-      this.removeJob(job);
-    });
-    this.emitter.on(JobStatus.FAILED, (data: { job: Job; error: Error }) => {
-      const job = this.queueMemory.find((job) => job.id === data.job.id);
-      job.status = JobStatus.FAILED;
-      this.jobsEventService.onFailed.apply(this.jobsEventService, [
-        job,
-        data.error,
-      ]);
-      // clear job from memory
-      this.removeJob(job);
-    });
+    this.emitter.on(
+      JobStatus.COMPLETED,
+      (data: { job: Job; result: any; skipEvent?: boolean }) => {
+        const job = this.queueMemory.find((job) => job.id === data.job.id);
+        job.status = JobStatus.COMPLETED;
+
+        if (!data.skipEvent) {
+          this.jobsEventService.onCompleted.apply(this.jobsEventService, [
+            job,
+            data.result,
+          ]);
+        }
+
+        // clear job from memory
+        this.removeJob(job);
+      },
+    );
+    this.emitter.on(
+      JobStatus.FAILED,
+      (data: { job: Job; error: Error; skipEvent?: boolean }) => {
+        const job = this.queueMemory.find((job) => job.id === data.job.id);
+        job.status = JobStatus.FAILED;
+
+        if (!data.skipEvent) {
+          this.jobsEventService.onFailed.apply(this.jobsEventService, [
+            job,
+            data.error,
+          ]);
+        }
+
+        // clear job from memory
+        this.removeJob(job);
+      },
+    );
   }
 
   async jobWrapper(job: Job) {
@@ -107,10 +121,14 @@ export class QueueService {
         data,
         getState: () => Promise.resolve(job.status),
         moveToCompleted: (returnValue?: string) => {
-          this.emitter.emit(JobStatus.COMPLETED, { job, result: returnValue });
+          this.emitter.emit(JobStatus.COMPLETED, {
+            job,
+            result: returnValue,
+            skipEvent: true,
+          });
         },
         moveToFailed: (error?: Error) => {
-          this.emitter.emit(JobStatus.FAILED, { job, error });
+          this.emitter.emit(JobStatus.FAILED, { job, error, skipEvent: true });
         },
       };
     }
@@ -125,11 +143,15 @@ export class QueueService {
 
       job.moveToCompleted = (returnValue?: string) => {
         clearTimeout(jobTimeout);
-        this.emitter.emit(JobStatus.COMPLETED, { job, result: returnValue });
+        this.emitter.emit(JobStatus.COMPLETED, {
+          job,
+          result: returnValue,
+          skipEvent: true,
+        });
       };
       job.moveToFailed = (error?: Error) => {
         clearTimeout(jobTimeout);
-        this.emitter.emit(JobStatus.FAILED, { job, error });
+        this.emitter.emit(JobStatus.FAILED, { job, error, skipEvent: true });
       };
     } else {
       if (!existingJob) {
