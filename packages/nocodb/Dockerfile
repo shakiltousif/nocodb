@@ -40,7 +40,7 @@ RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 
 # Copy application dependency manifests to the container image.
 COPY --link ./package.json ./package.json
-COPY --link ./docker/main.js ./docker/main.js
+# COPY --link ./docker/main.js ./docker/main.js
 COPY --link ./docker/start-litestream.sh /usr/src/appEntry/start.sh
 COPY --link src/public/ ./docker/public/
 
