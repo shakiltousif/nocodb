@@ -372,7 +372,7 @@ export class BasesService {
         columns,
       },
       user: param.user,
-      req: param.req,
+      req: param.req as NcRequest,
     });
 
     (base as any).tables = [table];
