@@ -91,7 +91,7 @@ function navigateForgotPassword() {
         >
           <LazyGeneralNocoIcon class="color-transition hover:(ring ring-accent ring-opacity-100)" :animate="isLoading" />
 
-          <h1 class="prose-2xl font-bold self-center my-4">{{ $t('general.signIn') }}</h1>
+          <h1 class="prose-2xl font-bold self-center my-4">Sign in to your account</h1>
 
           <a-form ref="formValidator" :model="form" layout="vertical" no-style @finish="signIn">
             <template v-if="!appInfo.disableEmailAuth">
