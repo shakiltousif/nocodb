@@ -25,6 +25,7 @@ import {
   Unauthorized,
   UnprocessableEntity,
 } from '~/helpers/catchError';
+import Noco from 'src/Noco';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -153,7 +154,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
       // encode the query parameter
       const redirectUrl = `${
-        request.dashboardUrl
+        Noco.dashboardUrl
       }?ui-redirect=${encodeURIComponent(
         `/sso?error=${encodeURIComponent(exception.message)}`,
       )}`;
