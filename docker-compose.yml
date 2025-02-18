@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   nocodb:
-    image: nocodb/nocodb:latest
+    image: nocodb-doyelai
     container_name: nocodb
     ports:
       - "8090:8080"  # Exposing NocoDB on port 8090
