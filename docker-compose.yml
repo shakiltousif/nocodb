@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   nocodb:
     image: nocodb-doyelai:latest
