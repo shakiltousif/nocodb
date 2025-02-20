@@ -47,7 +47,7 @@ RUN apk add --update --no-cache \
     jq
 
 # Copy production code & dependencies
-COPY --from=builder /usr/src/app /usr/src/app # ✅ Ensure node_modules is copied
+COPY --from=builder /usr/src/app /usr/src/app
 COPY --from=builder /usr/src/appEntry /usr/src/appEntry
 
 EXPOSE 8080
