@@ -103,7 +103,7 @@ COPY --link --from=lt-builder /usr/src/lt /usr/local/bin/litestream
 COPY --link ./docker/litestream.yml /etc/litestream.yml
 
 # Copy production code & main entry file
-COPY --from=builder /usr/src/app /usr/src/app # ✅ Ensure node_modules is copied
+COPY --from=builder /usr/src/app /usr/src/app #✅ Ensure node_modules is copied
 COPY --link --from=bin-builder /usr/src/app/node_modules/sqlite3/ /usr/src/app/node_modules/sqlite3/
 COPY --link --from=bin-builder /usr/src/app/node_modules/sharp/ /usr/src/app/node_modules/sharp/
 COPY --link --from=builder /usr/src/appEntry/ /usr/src/appEntry/
