@@ -37,6 +37,7 @@ RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 
 # Copy application dependency manifests to the container image
 COPY --link ./package.json ./package.json
+COPY --link ./pnpm-lock.yaml ./pnpm-lock.yaml # ✅ Add this line
 COPY --link ./docker/main.js ./docker/main.js
 COPY --link ./docker/start-litestream.sh /usr/src/appEntry/start.sh
 COPY --link src/public/ ./docker/public/
@@ -102,7 +103,7 @@ COPY --link --from=lt-builder /usr/src/lt /usr/local/bin/litestream
 COPY --link ./docker/litestream.yml /etc/litestream.yml
 
 # Copy production code & main entry file
-COPY --link --from=builder /usr/src/app/ /usr/src/app/
+COPY --from=builder /usr/src/app /usr/src/app # ✅ Ensure node_modules is copied
 COPY --link --from=bin-builder /usr/src/app/node_modules/sqlite3/ /usr/src/app/node_modules/sqlite3/
 COPY --link --from=bin-builder /usr/src/app/node_modules/sharp/ /usr/src/app/node_modules/sharp/
 COPY --link --from=builder /usr/src/appEntry/ /usr/src/appEntry/
