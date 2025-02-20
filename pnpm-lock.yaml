@@ -702,6 +702,9 @@ importers:
       bullmq:
         specifier: ^1.91.1
         version: 1.91.1
+      chevrotain:
+        specifier: ^10.5.0
+        version: 10.5.0
       clear:
         specifier: ^0.1.0
         version: 0.1.0
